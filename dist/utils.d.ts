@@ -21,4 +21,6 @@ declare const swaggerKeys: (className: String, methods: [String]) => string[];
  * Note that order is only guaranteed for string keys.
  */
 declare const sortObject: <TValue>(obj: Dictionary<TValue>, comparisonSelector: (val: TValue, length: number) => string | number, callbackFn?: (val: TValue) => TValue) => {};
+export declare const schemaToObject: (schema: any) => any;
+export declare const objectToSchema: (object: any) => any;
 export { convertPath, getPath, getFilepaths, loadClass, loadSwaggerClasses, reservedMethodNames, allowedMethods, swaggerKeys, sortObject, };
