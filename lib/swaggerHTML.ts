@@ -7,6 +7,7 @@ function parseSimpleConfig(config: {[name: string]: any} = {}) {
         if (typeof value === 'number' || typeof value === 'boolean') {
             return `${key}: ${value},`;
         }
+        return 'error-simple-config';
     }).join('\n\t  ');
 }
 

@@ -1,6 +1,6 @@
 import init from './swaggerTemplate';
 import { getPath, sortObject } from './utils';
-import { Dictionary } from 'ramda';
+import { Dictionary, clone } from 'ramda';
 /**
  * build swagger json from apiObjects
  */
@@ -32,10 +32,8 @@ const swaggerJSON = (options: { [name: string]: any } = {}, apiObjects: any) => 
       query = [],
       header = [],
       path: pathParams = [],
-      body = [],
       order,
       tags,
-      formData = [],
       security,
       deprecated,
       requestBody,
@@ -43,18 +41,14 @@ const swaggerJSON = (options: { [name: string]: any } = {}, apiObjects: any) => 
 
     pathParams.forEach((o: any) => o.required = true); // path params should not be optional
     const parameters = [...pathParams, ...query, ...header];
-    parameters.forEach((o: any) => o.schema = o.type && !o.schema ? { type: o.type } : o.schema); // compatiable for swagger v2
+    parameters.forEach((o: any) => o.schema = o.type && !o.schema ? clone(o) : o.schema); // compatiable for swagger v2
 
     // init path object first
     if (!paths[path]) {
       paths[path] = {};
     }
 
-    // add content type [multipart/form-data] to support file upload
-    const consumes = formData.length > 0 ? ['multipart/form-data'] : undefined;
-
     paths[path][method] = {
-      consumes,
       summary,
       description,
       parameters,

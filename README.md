@@ -256,7 +256,7 @@ path // @path({limit: {type: 'number', required: true, default: 10, description:
 
 body // @body({groups: {type: 'array', required: true, items: { type: 'string', example: 'group1' }}})
 
-formData // @formData({file: {type: 'file', required: true, description: 'file content'}})
+formData // @formData({file: {type: 'string', format: 'binary', description: 'file content'}})
 
 middlewares
 // support koa middlewares.

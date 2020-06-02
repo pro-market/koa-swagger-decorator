@@ -2,7 +2,7 @@ import _ from "ramda";
 import is from "is-type-of";
 import swaggerObject from "./swaggerObject";
 
-const _desc = (type: string, text: string | any[]) => (
+const _desc = (type: string, text: string | any[] | any) => (
   target: any,
   name: string,
   descriptor: PropertyDescriptor
@@ -65,7 +65,7 @@ const request = (method: string, path: string) => (
   descriptor.value.path = path;
   swaggerObject.add(target, name, {
     request: { method, path },
-    security: [{ ApiKeyAuth: [] }]
+    security: []
   });
   return descriptor;
 };
@@ -157,8 +157,25 @@ const body = (bodyParams: { [x: string]: any }) => (
   })(target, name, descriptor);
 };
 // formData params
-const formData = params("formData");
-
+const formData = (bodyParams: { [x: string]: any }) => (
+  target: any,
+  name: string,
+  descriptor: PropertyDescriptor
+) => {
+  if (!descriptor.value.parameters) descriptor.value.parameters = {};
+  descriptor.value.parameters['formData'] = bodyParams;
+  return requestBody({
+    description: 'multipart form data',
+    content: {
+      'multipart/form-data': {
+        schema: {
+          type: 'object',
+          properties: bodyParams
+        }
+      }
+    }
+  })(target, name, descriptor);
+};
 // class decorators
 const orderAll = (weight: number) => (target: any) => {
   swaggerObject.addMulti(target, { order: weight });

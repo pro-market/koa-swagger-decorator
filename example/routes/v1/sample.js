@@ -2,6 +2,7 @@ import multer from 'koa-multer';
 import _path from 'path';
 import Doc, { description, orderAll } from '../../../dist'; // 2 import style avaliable
 import config from '../../config';
+import { securityAll } from '../../../dist/decorators';
 
 const {
   request,
@@ -54,14 +55,15 @@ const log3 = async (ctx, next) => {
  * if filters = ['GET'], then only request using GET will have query param:[limit]
  */
 @queryAll({ limit: { type: 'number', default: 444, required: true } }, ['GET'])
+@securityAll([{ api_key: [] }])
 export default class SampleRouter {
   @request('post', '/sample')
   @summary('showing upload files example using koa-multer')
   @description('exampling [formdata] and [middlewares] decorators')
   @formData({
     file: {
-      type: 'file',
-      required: 'true',
+      type: 'string',
+      format: 'binary',
       description: 'upload file, get url'
     }
   })

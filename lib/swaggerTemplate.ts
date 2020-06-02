@@ -21,14 +21,7 @@ export default (
     {
       definitions: {},
       tags: [],
-      openapi: '3.0.1',
-      securityDefinitions: {
-        ApiKeyAuth: {
-          type: 'apiKey',
-          in: 'header',
-          name: 'Authorization'
-        }
-      }
+      openapi: '3.0.1'
     },
     options
   );

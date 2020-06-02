@@ -18,7 +18,7 @@ const cRequired = (input: any, expect: Expect = {}) => {
 
 const cNullable = (input: any, expect: Expect = {}) => {
   if (expect.nullable && is.null(input)) {
-    return { is: true, val: input};
+    return { is: true, val: input };
   }
   return { is: false, val: input };
 };
@@ -53,7 +53,7 @@ const cNum = (val: any, expect: Expect) => {
 
 const cBool = (val: any, expect: Expect) => {
   if (!cRequired(val, expect).is) return { is: false };
-  const cond = _.cond([
+  const cond = _.cond<any, { is: boolean, val: any }>([
     [_.equals('true'), _.always({ is: true, val: true })],
     [_.equals('false'), _.always({ is: true, val: false })],
     [_.T, _.always({ is: typeof val === 'boolean', val })]
@@ -149,7 +149,7 @@ const check = (input: any, expect: Expect) => {
   // 添加对body参数 nullable 情况的支持
   const r = cNullable(input, expect);
   if (r.is === true) return r;
-  const cond = _.cond([
+  const cond = _.cond<any, any>([
     [_.equals('string'), () => cString(input, expect)],
     [_.equals('boolean'), () => cBool(input, expect)],
     [_.equals('number'), () => cNum(input, expect)],

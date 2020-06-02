@@ -20,13 +20,18 @@ router.swagger({
   // [optional] additional options for building swagger doc
   // eg. add api_key as shown below
   swaggerOptions: {
-    securityDefinitions: {
-      ApiKeyAuth: {
-        type: 'apiKey',
-        in: 'header',
-        name: 'Authorization'
+    components: {
+      securitySchemes: {
+        api_key: {
+          type: 'apiKey',
+          name: 'Authorization',
+          in: 'header'
+        }
       }
-    }
+    },
+    servers: [{
+      url: '/'
+    }],
   },
   swaggerConfiguration: {
     display: {

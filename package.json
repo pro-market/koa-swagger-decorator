@@ -5,11 +5,11 @@
   "main": "dist/index.js",
   "dependencies": {
     "@types/globby": "^8.0.0",
-    "@types/koa-router": "^7.0.31",
+    "@types/koa-router": "*",
     "@types/ramda": "^0.25.36",
     "globby": "^8.0.1",
     "is-type-of": "^1.2.0",
-    "koa-router": "^7.2.1",
+    "koa-router": "*",
     "ramda": "^0.25.0"
   },
   "nyc": {

@@ -34,7 +34,7 @@ const validator = (parameters: any) => async (ctx: Context, next: () => Promise<
     ctx.validatedParams = validate(ctx.params, parameters.path);
   }
   if (parameters.body) {
-    ctx.validatedBody = validate(ctx.request.body, parameters.body);
+    ctx.validatedBody = validate(ctx.request['body'], parameters.body);
   }
   await next();
 };
@@ -78,7 +78,7 @@ const handleSwagger = (router: SwaggerRouter, options: SwaggerOptions) => {
   } = options;
 
   // setup swagger router
-  router.get(swaggerJsonEndpoint, async (ctx: Context) => {
+  router.get(swaggerJsonEndpoint, async (ctx: IRouter.IRouterContext) => {
     let data: Data = {};
     if (router instanceof SwaggerRouter) {
       Object.keys(swaggerObject.data).forEach(k => {
@@ -92,7 +92,7 @@ const handleSwagger = (router: SwaggerRouter, options: SwaggerOptions) => {
     }
     ctx.body = swaggerJSON(options, data);
   });
-  router.get(swaggerHtmlEndpoint, async (ctx: Context) => {
+  router.get(swaggerHtmlEndpoint, async (ctx: IRouter.IRouterContext) => {
     ctx.body = swaggerHTML(getPath(prefix, swaggerJsonEndpoint), swaggerConfiguration);
   });
 };
