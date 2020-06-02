@@ -21,7 +21,7 @@ export default (
     {
       definitions: {},
       tags: [],
-      swagger: '2.0',
+      openapi: '3.0.1',
       securityDefinitions: {
         ApiKeyAuth: {
           type: 'apiKey',

@@ -4,7 +4,7 @@ import { Dictionary } from 'ramda';
 /**
  * build swagger json from apiObjects
  */
-const swaggerJSON = (options: {[name: string]: any} = {}, apiObjects: any) => {
+const swaggerJSON = (options: { [name: string]: any } = {}, apiObjects: any) => {
   const {
     title,
     description,
@@ -13,7 +13,7 @@ const swaggerJSON = (options: {[name: string]: any} = {}, apiObjects: any) => {
     swaggerOptions = {}
   } = options;
   const swaggerJSON: any = init(title, description, version, swaggerOptions);
-  const paths: Dictionary<{[method: string]: any}> = {};
+  const paths: Dictionary<{ [method: string]: any }> = {};
   Object.keys(apiObjects).forEach((key) => {
     const value = apiObjects[key];
     if (!Object.keys(value).includes('request')) {
@@ -37,10 +37,13 @@ const swaggerJSON = (options: {[name: string]: any} = {}, apiObjects: any) => {
       tags,
       formData = [],
       security,
-      deprecated
+      deprecated,
+      requestBody,
     } = value;
 
-    const parameters = [...pathParams, ...query, ...header, ...formData, ...body];
+    pathParams.forEach((o: any) => o.required = true); // path params should not be optional
+    const parameters = [...pathParams, ...query, ...header];
+    parameters.forEach((o: any) => o.schema = o.type && !o.schema ? { type: o.type } : o.schema); // compatiable for swagger v2
 
     // init path object first
     if (!paths[path]) {
@@ -58,14 +61,15 @@ const swaggerJSON = (options: {[name: string]: any} = {}, apiObjects: any) => {
       responses,
       tags,
       security,
-      deprecated
+      deprecated,
+      requestBody,
     };
     if (!paths[path]._order) {
       paths[path]._order = order;
     }
   });
   swaggerJSON.paths = sortObject(paths, (path, length) => path._order || length, (path) => {
-    const { _order, ...restOfPathData} = path;
+    const { _order, ...restOfPathData } = path;
     return restOfPathData;
   });
   return swaggerJSON;

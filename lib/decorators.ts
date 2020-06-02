@@ -46,6 +46,15 @@ const _params = (type: string, parameters: { [name: string]: any }) => (
   return descriptor;
 };
 
+const requestBody = (parameters: { [name: string]: any }) => (
+  target: any,
+  name: string,
+  descriptor: PropertyDescriptor
+) => {
+  swaggerObject.add(target, name, { requestBody: parameters });
+  return descriptor;
+};
+
 const request = (method: string, path: string) => (
   target: any,
   name: string,
@@ -128,8 +137,25 @@ const header = params('header');
 const path = params("path");
 
 // body params
-const body = params("body");
-
+const body = (bodyParams: { [x: string]: any }) => (
+  target: any,
+  name: string,
+  descriptor: PropertyDescriptor
+) => {
+  if (!descriptor.value.parameters) descriptor.value.parameters = {};
+  descriptor.value.parameters['body'] = bodyParams;
+  return requestBody({
+    description: 'request body',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'object',
+          properties: bodyParams
+        }
+      }
+    }
+  })(target, name, descriptor);
+};
 // formData params
 const formData = params("formData");
 
@@ -233,5 +259,6 @@ export {
   securityAll,
   deprecatedAll,
   queryAll,
-  prefix
+  prefix,
+  requestBody
 };

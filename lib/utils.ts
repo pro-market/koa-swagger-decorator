@@ -93,58 +93,6 @@ export interface ISwaggerSchema {
   properties?: any;
   items?: any[];
 }
-// 将 swagger 的 schema 对象转换为 js 中的 object 递归的
-export const schemaToObject = (schema: any) => {
-  const {type, properties} = schema;
-
-  if (type === 'object' && is.object(properties)) {
-    const res: any  = {};
-    Object.keys(properties).forEach(k => {
-      res[k] = schemaToObject(properties[k]);
-    });
-    return res;
-  }
-
-  return schema;
-};
-
-class User {
-  id: String;
-  d: {
-    yy: Boolean
-  };
-  x = {
-    type: 'string'
-  };
-}
-export const parameterTransformer = (object: any) => {
-  // 判断使用的定义方式 可能需要的保留词 type 会有冲突
-  const {type, properties} = schema;
-  interface IX {
-    a: String;
-    d: {
-      yy: Boolean,
-    };
-  }
-  const y: User = {
-    id: '34',
-    d: {
-      yy: true
-    },
-  };
-  if (type === 'object' && is.object(properties)) {
-    const res: any  = {};
-    Object.keys(properties).forEach(k => {
-      res[k] = parameterTransformer(properties[k]);
-    });
-    return res;
-  }
-
-  return schema;
-};
-export const objectToSchema = (object: any) => {
-  return object;
-};
 export {
   convertPath,
   getPath,
