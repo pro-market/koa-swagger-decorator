@@ -5,11 +5,9 @@
     "lib": ["es2015", "es2016", "es2017"],
     "allowJs": false,
     "jsx": "react",
-    "declaration": true,
+    "declaration": false,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "strictFunctionTypes": true,
-    "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "types": ["node"],
@@ -20,8 +18,5 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": [
-    "lib/**/*",
-    "test/**/*"
-  ]
+  "exclude": ["dist"]
 }

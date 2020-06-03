@@ -26,7 +26,7 @@ const tag = tags(['B']);
 
 const storage = multer.diskStorage({
   destination: _path.resolve('temp/'),
-  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
+  filename: (req, file, cb) => cb(undefined, `${Date.now()}-${file.originalname}`)
 });
 
 const upload = multer({ storage });
