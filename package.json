@@ -1,6 +1,6 @@
 {
   "name": "koa-swagger-decorator",
-  "version": "1.6.4",
+  "version": "2.0.1",
   "description": "using decorator to automatically generate swagger doc for koa-router",
   "main": "dist/index.js",
   "dependencies": {
@@ -51,7 +51,7 @@
     "start:example": "ts-node -P example/tsconfig.json example/main",
     "start": "nodemon --watch example --exec npm run start:example",
     "prepublish": "npm run build",
-    "next": "npm publish --dist-tag next",
+    "next": "npm publish --tag=next --registry=https://registry.npmjs.org",
     "cov": "nyc --reporter=lcov npm run test"
   },
   "keywords": [
