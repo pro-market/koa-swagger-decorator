@@ -2,6 +2,8 @@
 
 > using decorator to auto generate swagger json docs
 
+扩展 @koa/router 支持装饰器模式生成路由和 swagger 文档
+
 [![build status][travis-image]][travis-url]
 [![npm](https://img.shields.io/npm/l/express.svg)](https://www.npmjs.com/package/koa-swagger-decorator)
 

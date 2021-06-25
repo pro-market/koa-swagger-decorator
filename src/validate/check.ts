@@ -1,6 +1,6 @@
-import is from 'is-type-of';
-import validator from 'validator';
-import _ from 'ramda';
+import is from "is-type-of";
+import validator from "validator";
+import _ from "ramda";
 
 export interface Expect {
   required?: boolean;
@@ -19,7 +19,7 @@ const cRequired = (input: any, expect: Expect = {}) => {
 
 const cNullable = (input: any, expect: Expect = {}) => {
   if (expect.nullable && is.null(input)) {
-    return { is: true, val: input};
+    return { is: true, val: input };
   }
   return { is: false, val: input };
 };
@@ -42,40 +42,46 @@ const cString = (val: any, expect: Expect) => {
   if (!cRequired(val, expect).is) return { is: false };
   if (expect.enum && !cEnum(val, expect).is) return { is: false };
   if (expect.format && !cFormat(val, expect).is) return { is: false };
-  return typeof val === 'string'
+  return typeof val === "string"
     ? { is: true, val: String(val) }
     : { is: false };
 };
 
 const cFormat = (val: any, expect: Expect) => {
-  if (expect.format === 'email' && !validator.isEmail(val)) return { is: false };
-  if (expect.format === 'uuid' && !validator.isUUID(val)) return { is: false };
-  if ((expect.format === 'date' || expect.format === 'date-time') && !validator.isRFC3339(val)) return { is: false };
-  if (expect.format === 'byte' && !validator.isBase64(val)) return { is: false };
-  if (expect.format === 'ipv4' && !validator.isIP(val, 4)) return { is: false };
-  if (expect.format === 'ipv6' && !validator.isIP(val, 6)) return { is: false };
-  
+  if (expect.format === "email" && !validator.isEmail(val))
+    return { is: false };
+  if (expect.format === "uuid" && !validator.isUUID(val)) return { is: false };
+  if (
+    (expect.format === "date" || expect.format === "date-time") &&
+    !validator.isRFC3339(val)
+  )
+    return { is: false };
+  if (expect.format === "byte" && !validator.isBase64(val))
+    return { is: false };
+  if (expect.format === "ipv4" && !validator.isIP(val, 4)) return { is: false };
+  if (expect.format === "ipv6" && !validator.isIP(val, 6)) return { is: false };
+
   return { is: true, val: String(val) };
-}
+};
 
 const cNum = (val: any, expect: Expect) => {
   if (!cRequired(val, expect).is) return { is: false };
   if (expect.enum && !cEnum(Number(val), expect).is) return { is: false };
-  if (isNaN(Number(val)) || val === '') return { is: false };
+  if (isNaN(Number(val)) || val === "") return { is: false };
   if (expect.minimum && expect.minimum > Number(val)) return { is: false };
   if (expect.maximum && expect.maximum < Number(val)) return { is: false };
-  
+
   return { is: true, val: Number(val) };
 };
 
 const cBool = (val: any, expect: Expect) => {
   if (!cRequired(val, expect).is) return { is: false };
   const cond = _.cond([
-    [_.equals('true'), _.always({ is: true, val: true })],
-    [_.equals('false'), _.always({ is: true, val: false })],
-    [_.T, _.always({ is: typeof val === 'boolean', val })]
+    [_.equals("true"), _.always({ is: true, val: true })],
+    [_.equals("false"), _.always({ is: true, val: false })],
+    [_.T, _.always({ is: typeof val === "boolean", val })]
   ]);
-  return cond(val);
+  return cond(val as never);
 };
 // /**
 //  * 对 Object 做检验, 支持嵌套数据
@@ -107,7 +113,7 @@ const cObject = (input: any, expect: Expect = {}) => {
     }
     const { is, val } = check(input[key], expect.properties[key]);
     if (!is) {
-      console.log('error object properties:', key); // TODO need to update error debug info
+      console.log("error object properties:", key); // TODO need to update error debug info
       res.is = false;
       break;
     }
@@ -115,7 +121,6 @@ const cObject = (input: any, expect: Expect = {}) => {
   }
   return res;
 };
-
 
 // {
 //   type: 'array', required: true, items: 'string', example: ['填写内容']
@@ -148,11 +153,11 @@ const cArray = (input: any, expect: Expect) => {
       input.length === input.filter(item => func(item)).length;
 
     const cond = _.cond([
-      [_.equals('string'), check(is.string)],
-      [_.equals('boolean'), check(is.boolean)],
-      [_.equals('number'), check(is.number)],
-      [_.equals('object'), check(is.object)],
-      [_.equals('array'), check(is.array)],
+      [_.equals("string"), check(is.string)],
+      [_.equals("boolean"), check(is.boolean)],
+      [_.equals("number"), check(is.number)],
+      [_.equals("object"), check(is.object)],
+      [_.equals("array"), check(is.array)],
       [_.T, true]
     ]);
 
@@ -167,11 +172,11 @@ const check = (input: any, expect: Expect) => {
   const r = cNullable(input, expect);
   if (r.is === true) return r;
   const cond = _.cond([
-    [_.equals('string'), () => cString(input, expect)],
-    [_.equals('boolean'), () => cBool(input, expect)],
-    [_.equals('number'), () => cNum(input, expect)],
-    [_.equals('object'), () => cObject(input, expect)],
-    [_.equals('array'), () => cArray(input, expect)],
+    [_.equals("string"), () => cString(input, expect)],
+    [_.equals("boolean"), () => cBool(input, expect)],
+    [_.equals("number"), () => cNum(input, expect)],
+    [_.equals("object"), () => cObject(input, expect)],
+    [_.equals("array"), () => cArray(input, expect)],
     [_.T, () => ({ is: true, val: input })] // 其他类型不做校验，直接返回原数据
   ]);
 

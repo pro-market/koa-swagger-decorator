@@ -1,6 +1,6 @@
-import _ from 'ramda';
-import Checker from './check';
-import { Expect } from './check';
+import _ from "ramda";
+import Checker from "./check";
+import { Expect } from "./check";
 class InputError extends Error {
   field: string;
   status: number;
@@ -16,11 +16,11 @@ export interface ExpectObject {
 export interface Input {
   [key: string]: any;
 }
-export default function (rawInput: Input, expect: ExpectObject) {
+export default function(rawInput: Input, expect: ExpectObject) {
   // make it pure
   const input = _.clone(rawInput);
 
-  Object.keys(expect).forEach((key) => {
+  Object.keys(expect).forEach(key => {
     if (expect[key] === undefined) {
       delete input[key]; // remove unexpected key/vals.
       return;
