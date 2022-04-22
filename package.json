@@ -1,5 +1,5 @@
 {
-  "name": "koa-swagger-decorator",
+  "name": "@pro-market/koa-swagger-decorator",
   "version": "1.8.5",
   "description": "using decorator to automatically generate swagger doc for koa-router",
   "main": "dist/index.js",
@@ -17,15 +17,15 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.6",
-    "@commitlint/config-conventional": "^8.3.6",
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
     "@koa/cors": "^3.1.0",
     "@koa/multer": "^3.0.0",
     "@types/jest": "26",
     "@types/koa": "^2.13.4",
-    "@types/koa-bodyparser": "^5.0.2",
     "@types/koa__cors": "^3.1.1",
     "@types/koa__multer": "^2.0.4",
+    "@types/koa-bodyparser": "^5.0.2",
     "@types/mocha": "^5.2.7",
     "@types/node": "^16.11.17",
     "chai": "^4.3.4",
@@ -39,7 +39,7 @@
     "nodemon": "^2.0.15",
     "power-assert": "^1.6.1",
     "standard-version": "^9.3.2",
-    "supertest": "^2.0.1",
+    "supertest": "^6.2.2",
     "ts-jest": "26",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
@@ -66,5 +66,5 @@
   ],
   "author": "cody",
   "license": "MIT",
-  "repository": "https://github.com/Cody2333/koa-swagger-decorator"
+  "repository": "https://github.com/pro-market/koa-swagger-decorator"
 }
