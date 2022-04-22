@@ -79,7 +79,11 @@ const middlewares = (middlewares: Function[]) => (
   name: string,
   descriptor: PropertyDescriptor
 ) => {
-  descriptor.value.middlewares = middlewares;
+  if (is.array(descriptor.value.middlewares)) {
+    descriptor.value.middlewares.push.apply(descriptor.value.middlewares, middlewares);
+  } else {
+    descriptor.value.middlewares = middlewares;
+  }
   return descriptor;
 };
 
@@ -162,7 +166,11 @@ const responsesAll = (responses: IResponses = defaultResp) => (target: any) => {
 
 const middlewaresAll = (items: Function[] | Function) => (target: any) => {
   const middlewares = is.array(items) ? items : [items];
-  target.middlewares = middlewares;
+  if (is.array(target.middlewares)) {
+    target.middlewares.push.apply(target.middlewares, middlewares);
+  } else {
+    target.middlewares = middlewares;
+  }
 };
 
 const securityAll = (security: any[] | any) => (target: any) => {
